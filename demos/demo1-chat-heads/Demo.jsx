@@ -1,8 +1,9 @@
-import React from 'react';
-import {StaggeredMotion, spring, presets} from '../../src/react-motion';
+import Inferno from 'inferno';
+import createClass from 'inferno-create-class';
+import {StaggeredMotion, spring, presets} from '../../src/inferno-motion';
 import range from 'lodash.range';
 
-const Demo = React.createClass({
+const Demo = createClass({
   getInitialState() {
     return {x: 250, y: 300};
   },

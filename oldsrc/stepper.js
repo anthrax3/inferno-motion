@@ -1,18 +1,18 @@
-/*       */
+/* @flow */
 
 // stepper is used a lot. Saves allocation to return the same array wrapper.
 // This is fine and danger-free against mutations because the callsite
 // immediately destructures it and gets the numbers inside without passing the
 // array reference around.
-let reusedTuple = [];
+let reusedTuple: [number, number] = [];
 export default function stepper(
-  secondPerFrame,
-  x,
-  v,
-  destX,
-  k,
-  b,
-  precision) {
+  secondPerFrame: number,
+  x: number,
+  v: number,
+  destX: number,
+  k: number,
+  b: number,
+  precision: number): [number, number] {
   // Spring stiffness, in kg / s^2
 
   // for animations, destX is really spring length (spring at rest). initial

@@ -1,10 +1,11 @@
-import React from 'react';
-import {Motion, spring} from '../../src/react-motion';
+import Inferno from 'inferno';
+import {Motion, spring} from '../../src/inferno-motion';
+import createClass from 'inferno-create-class';
 
 const springSettings = {stiffness: 170, damping: 26};
 const NEXT = 'show-next';
 
-const Demo = React.createClass({
+const Demo = createClass({
   getInitialState() {
     return {
       photos: [[500, 350], [800, 600], [800, 400], [700, 500], [200, 650], [600, 600]],

@@ -1,7 +1,8 @@
-import React from 'react';
-import {TransitionMotion, spring, presets} from '../../src/react-motion';
+import Inferno from 'inferno';
+import {TransitionMotion, spring, presets} from '../../src/inferno-motion';
+import createClass from 'inferno-create-class';
 
-const Demo = React.createClass({
+const Demo = createClass({
   getInitialState() {
     return {
       todos: [

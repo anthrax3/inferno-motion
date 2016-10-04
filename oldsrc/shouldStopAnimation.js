@@ -1,10 +1,13 @@
+/* @flow */
+import type {PlainStyle, Style, Velocity} from './Types';
+
 // usage assumption: currentStyle values have already been rendered but it says
 // nothing of whether currentStyle is stale (see unreadPropStyle)
 export default function shouldStopAnimation(
-  currentStyle,
-  style,
-  currentVelocity,
-) {
+  currentStyle: PlainStyle,
+  style: Style,
+  currentVelocity: Velocity,
+): boolean {
   for (let key in style) {
     if (!style.hasOwnProperty(key)) {
       continue;

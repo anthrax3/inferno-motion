@@ -1,3 +1,4 @@
+/* @flow */
 
 let hasWarned = false;
 export default function reorderKeys() {

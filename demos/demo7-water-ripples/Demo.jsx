@@ -1,8 +1,9 @@
-import React from 'react';
-import {TransitionMotion, spring} from '../../src/react-motion';
+import Inferno from 'inferno';
+import createClass from 'inferno-create-class';
+import {TransitionMotion, spring} from '../../src/inferno-motion';
 
 const leavingSpringConfig = {stiffness: 60, damping: 15};
-const Demo = React.createClass({
+const Demo = createClass({
   getInitialState() {
     return {mouse: [], now: 't' + 0};
   },

@@ -16,9 +16,6 @@ var devtool;
 var plugins = [
   new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-  }),
-  new webpack.ProvidePlugin({
-    'Inferno': 'react'
   })
 ];
 var entry = {
@@ -33,7 +30,7 @@ var entry = {
 };
 
 if (process.env.NODE_ENV === 'development') {
-  devtool = 'eval-source-map';
+  // devtool = 'eval-source-map';
   // loaders = ['react-hot'].concat(loaders);
   loaders = loaders;
   plugins = plugins.concat([
@@ -48,7 +45,7 @@ if (process.env.NODE_ENV === 'development') {
     return result;
   }, {});
 } else {
-  devtool = 'source-map';
+  // devtool = 'source-map';
   plugins = plugins.concat([
     new webpack.optimize.OccurenceOrderPlugin()
   ]);
@@ -79,10 +76,6 @@ module.exports = {
     ],
   },
   resolve: {
-    alias: {
-      'react': 'inferno-compat',
-      'react-dom': 'inferno-compat'
-    },
     extensions: ['', '.js', '.jsx']
   },
   plugins: plugins,

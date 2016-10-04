@@ -1,3 +1,5 @@
+/* @flow */
+import type {TransitionStyle} from './Types';
 
 // core keys merging algorithm. If previous render's keys are [a, b], and the
 // next render's [c, b, d], what's the final merged keys and ordering?
@@ -16,18 +18,18 @@
 // current use-case bc the runtime is linear in terms of edges (see wiki for
 // meaning), which is huge when two lists have many common elements
 export default function mergeDiff(
-  prev,
-  next,
-  onRemove
-) {
+  prev: Array<TransitionStyle>,
+  next: Array<TransitionStyle>,
+  onRemove: (prevIndex: number, prevStyleCell: TransitionStyle) => ?TransitionStyle
+): Array<TransitionStyle> {
   // bookkeeping for easier access of a key's index below. This is 2 allocations +
   // potentially triggering chrome hash map mode for objs (so it might be faster
   // to loop through and find a key's index each time), but I no longer care
-  let prevKeyIndex = {};
+  let prevKeyIndex: {[key: string]: number} = {};
   for (let i = 0; i < prev.length; i++) {
     prevKeyIndex[prev[i].key] = i;
   }
-  let nextKeyIndex = {};
+  let nextKeyIndex: {[key: string]: number} = {};
   for (let i = 0; i < next.length; i++) {
     nextKeyIndex[next[i].key] = i;
   }

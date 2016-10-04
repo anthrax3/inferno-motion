@@ -1,19 +1,29 @@
+/* @flow */
 import mapToZero from './mapToZero';
 import stripStyle from './stripStyle';
 import stepper from './stepper';
 import defaultNow from 'performance-now';
 import defaultRaf from 'raf';
 import shouldStopAnimation from './shouldStopAnimation';
-import createClass from 'inferno-create-class';
-import Children from './children';
+import React, {PropTypes} from 'react';
+
+import type {Element as ReactElement} from 'react';
+import type {PlainStyle, Style, Velocity, StaggeredProps} from './Types';
 
 const msPerFrame = 1000 / 60;
 
+type StaggeredMotionState = {
+  currentStyles: Array<PlainStyle>,
+  currentVelocities: Array<Velocity>,
+  lastIdealStyles: Array<PlainStyle>,
+  lastIdealVelocities: Array<Velocity>,
+};
+
 function shouldStopAnimationAll(
-  currentStyles,
-  styles,
-  currentVelocities,
-) {
+  currentStyles: Array<PlainStyle>,
+  styles: Array<Style>,
+  currentVelocities: Array<Velocity>,
+): boolean {
   for (let i = 0; i < currentStyles.length; i++) {
     if (!shouldStopAnimation(currentStyles[i], styles[i], currentVelocities[i])) {
       return false;
@@ -22,10 +32,17 @@ function shouldStopAnimationAll(
   return true;
 }
 
-const StaggeredMotion = createClass({
-  getInitialState() {
+const StaggeredMotion = React.createClass({
+  propTypes: {
+    // TOOD: warn against putting a config in here
+    defaultStyles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.number)),
+    styles: PropTypes.func.isRequired,
+    children: PropTypes.func.isRequired,
+  },
+
+  getInitialState(): StaggeredMotionState {
     const {defaultStyles, styles} = this.props;
-    const currentStyles = defaultStyles || styles().map(stripStyle);
+    const currentStyles: Array<PlainStyle> = defaultStyles || styles().map(stripStyle);
     const currentVelocities = currentStyles.map(currentStyle => mapToZero(currentStyle));
     return {
       currentStyles: currentStyles,
@@ -35,7 +52,7 @@ const StaggeredMotion = createClass({
     };
   },
 
-  animationID: (null),
+  animationID: (null: ?number),
   prevTime: 0,
   accumulatedTime: 0,
   // it's possible that currentStyle's value is stale: if props is immediately
@@ -43,11 +60,11 @@ const StaggeredMotion = createClass({
   // at 0 (didn't have time to tick and interpolate even once). If we naively
   // compare currentStyle with destVal it'll be 0 === 0 (no animation, stop).
   // In reality currentStyle should be 400
-  unreadPropStyles: (null),
+  unreadPropStyles: (null: ?Array<Style>),
   // after checking for unreadPropStyles != null, we manually go set the
   // non-interpolating values (those that are a number, without a spring
   // config)
-  clearUnreadPropStyle(unreadPropStyles) {
+  clearUnreadPropStyle(unreadPropStyles: Array<Style>): void {
     let {currentStyles, currentVelocities, lastIdealStyles, lastIdealVelocities} = this.state;
 
     let someDirty = false;
@@ -83,11 +100,11 @@ const StaggeredMotion = createClass({
     }
   },
 
-  startAnimationIfNecessary() {
+  startAnimationIfNecessary(): void {
     // TODO: when config is {a: 10} and dest is {a: 10} do we raf once and
     // call cb? No, otherwise accidental parent rerender causes cb trigger
     this.animationID = defaultRaf((timestamp) => {
-      const destStyles = this.props.styles(this.state.lastIdealStyles);
+      const destStyles: Array<Style> = this.props.styles(this.state.lastIdealStyles);
 
       // check if we need to animate in the first place
       if (shouldStopAnimationAll(
@@ -128,10 +145,10 @@ const StaggeredMotion = createClass({
 
       for (let i = 0; i < destStyles.length; i++) {
         const destStyle = destStyles[i];
-        let newCurrentStyle = {};
-        let newCurrentVelocity = {};
-        let newLastIdealStyle = {};
-        let newLastIdealVelocity = {};
+        let newCurrentStyle: PlainStyle = {};
+        let newCurrentVelocity: Velocity = {};
+        let newLastIdealStyle: PlainStyle = {};
+        let newLastIdealVelocity: Velocity = {};
 
         for (let key in destStyle) {
           if (!destStyle.hasOwnProperty(key)) {
@@ -207,7 +224,7 @@ const StaggeredMotion = createClass({
     this.startAnimationIfNecessary();
   },
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(props: StaggeredProps) {
     if (this.unreadPropStyles != null) {
       // previous props haven't had the chance to be set yet; set them here
       this.clearUnreadPropStyle(this.unreadPropStyles);
@@ -227,9 +244,9 @@ const StaggeredMotion = createClass({
     }
   },
 
-  render()               {
+  render(): ReactElement {
     const renderedChildren = this.props.children(this.state.currentStyles);
-    return renderedChildren && Children.only(renderedChildren);
+    return renderedChildren && React.Children.only(renderedChildren);
   },
 });
 

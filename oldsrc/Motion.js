@@ -1,16 +1,36 @@
+/* @flow */
 import mapToZero from './mapToZero';
 import stripStyle from './stripStyle';
 import stepper from './stepper';
 import defaultNow from 'performance-now';
 import defaultRaf from 'raf';
 import shouldStopAnimation from './shouldStopAnimation';
-import createClass from 'inferno-create-class';
-import Children from './children';
+import React, {PropTypes} from 'react';
 
+import type {Element as ReactElement} from 'react';
+import type {PlainStyle, Style, Velocity, MotionProps} from './Types';
 const msPerFrame = 1000 / 60;
 
-const Motion = createClass({
-  getInitialState() {
+type MotionState = {
+  currentStyle: PlainStyle,
+  currentVelocity: Velocity,
+  lastIdealStyle: PlainStyle,
+  lastIdealVelocity: Velocity,
+};
+
+const Motion = React.createClass({
+  propTypes: {
+    // TOOD: warn against putting a config in here
+    defaultStyle: PropTypes.objectOf(PropTypes.number),
+    style: PropTypes.objectOf(PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.object,
+    ])).isRequired,
+    children: PropTypes.func.isRequired,
+    onRest: PropTypes.func,
+  },
+
+  getInitialState(): MotionState {
     const {defaultStyle, style} = this.props;
     const currentStyle = defaultStyle || stripStyle(style);
     const currentVelocity = mapToZero(currentStyle);
@@ -23,7 +43,7 @@ const Motion = createClass({
   },
 
   wasAnimating: false,
-  animationID: (null),
+  animationID: (null: ?number),
   prevTime: 0,
   accumulatedTime: 0,
   // it's possible that currentStyle's value is stale: if props is immediately
@@ -31,11 +51,11 @@ const Motion = createClass({
   // at 0 (didn't have time to tick and interpolate even once). If we naively
   // compare currentStyle with destVal it'll be 0 === 0 (no animation, stop).
   // In reality currentStyle should be 400
-  unreadPropStyle: (null        ),
+  unreadPropStyle: (null: ?Style),
   // after checking for unreadPropStyle != null, we manually go set the
   // non-interpolating values (those that are a number, without a spring
   // config)
-  clearUnreadPropStyle(destStyle) {
+  clearUnreadPropStyle(destStyle: Style): void {
     let dirty = false;
     let {currentStyle, currentVelocity, lastIdealStyle, lastIdealVelocity} = this.state;
 
@@ -66,12 +86,12 @@ const Motion = createClass({
     }
   },
 
-  startAnimationIfNecessary() {
+  startAnimationIfNecessary(): void {
     // TODO: when config is {a: 10} and dest is {a: 10} do we raf once and
     // call cb? No, otherwise accidental parent rerender causes cb trigger
     this.animationID = defaultRaf((timestamp) => {
       // check if we need to animate in the first place
-      const propsStyle = this.props.style;
+      const propsStyle: Style = this.props.style;
       if (shouldStopAnimation(
         this.state.currentStyle,
         propsStyle,
@@ -110,10 +130,10 @@ const Motion = createClass({
         (this.accumulatedTime - Math.floor(this.accumulatedTime / msPerFrame) * msPerFrame) / msPerFrame;
       const framesToCatchUp = Math.floor(this.accumulatedTime / msPerFrame);
 
-      let newLastIdealStyle = {};
-      let newLastIdealVelocity = {};
-      let newCurrentStyle = {};
-      let newCurrentVelocity = {};
+      let newLastIdealStyle: PlainStyle = {};
+      let newLastIdealVelocity: Velocity = {};
+      let newCurrentStyle: PlainStyle = {};
+      let newCurrentVelocity: Velocity = {};
 
       for (let key in propsStyle) {
         if (!propsStyle.hasOwnProperty(key)) {
@@ -183,7 +203,7 @@ const Motion = createClass({
     this.startAnimationIfNecessary();
   },
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(props: MotionProps) {
     if (this.unreadPropStyle != null) {
       // previous props haven't had the chance to be set yet; set them here
       this.clearUnreadPropStyle(this.unreadPropStyle);
@@ -203,9 +223,9 @@ const Motion = createClass({
     }
   },
 
-  render() {
+  render(): ReactElement {
     const renderedChildren = this.props.children(this.state.currentStyle);
-    return renderedChildren && Children.only(renderedChildren);
+    return renderedChildren && React.Children.only(renderedChildren);
   },
 });
 

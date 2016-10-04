@@ -1,12 +1,13 @@
-import React from 'react';
-import {Motion, spring} from '../../src/react-motion';
+import Inferno from 'inferno';
+import createClass from 'inferno-create-class';
+import {Motion, spring} from '../../src/inferno-motion';
 import range from 'lodash.range';
 
 const gridWidth = 150;
 const gridHeight = 150;
 const grid = range(4).map(() => range(6));
 
-const Demo = React.createClass({
+const Demo = createClass({
   getInitialState() {
     return {
       delta: [0, 0],

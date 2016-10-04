@@ -1,6 +1,7 @@
-import React from 'react';
-import {Motion, spring} from '../../src/react-motion';
+import Inferno from 'inferno';
+import {Motion, spring} from '../../src/inferno-motion';
 import range from 'lodash.range';
+import createClass from 'inferno-create-class';
 
 const springSetting1 = {stiffness: 180, damping: 10};
 const springSetting2 = {stiffness: 120, damping: 17};
@@ -28,7 +29,7 @@ const layout = range(count).map(n => {
   return [width * col, height * row];
 });
 
-const Demo = React.createClass({
+const Demo = createClass({
   getInitialState() {
     return {
       mouse: [0, 0],

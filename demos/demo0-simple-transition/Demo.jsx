@@ -1,7 +1,8 @@
-import React from 'react';
-import {Motion, spring} from '../../src/react-motion';
+import Inferno from 'inferno';
+import createClass from 'inferno-create-class';
+import {Motion, spring} from '../../src/inferno-motion';
 
-const Demo = React.createClass({
+const Demo = createClass({
   getInitialState() {
     return {open: false};
   },

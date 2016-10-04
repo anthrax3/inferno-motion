@@ -1,5 +1,6 @@
-import React from 'react';
-import {Motion, spring} from '../../src/react-motion';
+import Inferno from 'inferno';
+import createClass from 'inferno-create-class';
+import {Motion, spring} from '../../src/inferno-motion';
 import range from 'lodash.range';
 
 function reinsert(arr, from, to) {
@@ -17,7 +18,7 @@ function clamp(n, min, max) {
 const springConfig = {stiffness: 300, damping: 50};
 const itemsCount = 4;
 
-const Demo = React.createClass({
+const Demo = createClass({
   getInitialState() {
     return {
       delta: 0,

@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import Inferno from 'inferno';
+import InfernoDOM from 'inferno-dom';
 import Demo from './Demo';
 
-ReactDOM.render(<Demo />, document.querySelector('#content'));
+InfernoDOM.render(<Demo />, document.querySelector('#content'));

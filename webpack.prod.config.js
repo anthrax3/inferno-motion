@@ -9,14 +9,14 @@ var path = require('path');
 var config = {
   devtool: 'sourcemap',
   entry: {
-    index: './src/react-motion.js'
+    index: './src/inferno-motion.js'
   },
   output: {
     path: path.join(__dirname, 'build'),
     publicPath: 'build/',
-    filename: 'react-motion.js',
-    sourceMapFilename: 'react-motion.map',
-    library: 'ReactMotion',
+    filename: 'inferno-motion.js',
+    sourceMapFilename: 'inferno-motion.map',
+    library: 'InfernoMotion',
     libraryTarget: 'umd'
   },
   module: {
@@ -31,10 +31,10 @@ var config = {
   },
   externals: {
     'react': {
-      root: 'React',
-      commonjs2: 'react',
-      commonjs: 'react',
-      amd: 'react'
+      root: 'Inferno',
+      commonjs2: 'inferno',
+      commonjs: 'inferno',
+      amd: 'inferno'
     }
   },
 };
