@@ -1,12 +1,9 @@
-# React-Motion
+# Inferno-Motion
 
-[![Build Status](https://travis-ci.org/chenglou/react-motion.svg?branch=master)](https://travis-ci.org/chenglou/react-motion)
-[![npm version](https://badge.fury.io/js/react-motion.svg)](https://www.npmjs.com/package/react-motion)
-[![Bower version](https://badge.fury.io/bo/react-motion.svg)](http://badge.fury.io/bo/react-motion)
-[![react-motion channel on discord](https://img.shields.io/badge/discord-react--motion%40reactiflux-738bd7.svg?style=flat)](https://discordapp.com/invite/0ZcbPKXt5bYzmcI0)
+Note: This is a port of `react-motion` to Inferno.
 
 ```js
-import {Motion, spring} from 'react-motion';
+import {Motion, spring} from 'inferno-motion';
 // In your render...
 <Motion defaultStyle={{x: 0}} style={{x: spring(10)}}>
   {value => <div>{value.x}</div>}
@@ -17,28 +14,7 @@ Animate a counter from `0` to `10`. For more advanced usage, see below.
 
 ### Install
 
-- Npm: `npm install --save react-motion`
-
-- Bower: **do not install with `bower install react-motion`, it won't work**. Use `bower install --save https://unpkg.com/react-motion/bower.zip`. Or in `bower.json`:
-```json
-{
-  "dependencies": {
-    "react-motion": "https://unpkg.com/react-motion/bower.zip"
-  }
-}
-```
-then include as
-```html
-<script src="bower_components/react-motion/build/react-motion.js"></script>
-```
-
-- 1998 Script Tag:
-```html
-<script src="https://unpkg.com/react-motion/build/react-motion.js"></script>
-(Module exposed as `ReactMotion`)
-```
-
-**Works with React-Native v0.18+**.
+- Npm: `npm install --save inferno-motion`
 
 ### Demos
 - [Simple Transition](http://chenglou.github.io/react-motion/demos/demo0-simple-transition)
@@ -54,19 +30,19 @@ then include as
 
 ### Try the Demos Locally
 ```sh
-git clone https://github.com/chenglou/react-motion.git
-cd react-motion
+git clone https://github.com/infernojs/inferno-motion.git
+cd inferno-motion
 npm install
 ```
 
-- With hot reloading (**slow, development version**): run `npm start`.
-- Without hot reloading (**faster, production version**): run `npm run build-demos` and open the static `demos/demo_name/index.html` file directly. **Don't forget to use production mode when testing your animation's performance**!
+- Development (**slow, development version**): run `npm start`.
+- Production (**faster, production version**): run `npm run build-demos` and open the static `demos/demo_name/index.html` file directly. **Don't forget to use production mode when testing your animation's performance**!
 
 To build the repo yourself: `npm run prerelease`.
 
 ## What does this library try to solve?
 
-[My React-Europe talk](https://www.youtube.com/watch?v=1tavDv5hXpo)
+[Chenglou's React-Europe talk](https://www.youtube.com/watch?v=1tavDv5hXpo)
 
 For 95% of use-cases of animating components, we don't have to resort to using hard-coded easing curves and duration. Set up a stiffness and damping for your UI element, and let the magic of physics take care of the rest. This way, you don't have to worry about petty situations such as interrupted animation behavior. It also greatly simplifies the API.
 

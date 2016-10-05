@@ -1,8 +1,8 @@
 {
-  "name": "react-motion",
-  "version": "0.4.4",
+  "name": "inferno-motion",
+  "version": "0.4.4-beta3",
   "description": "A spring that solves your animation problems.",
-  "main": "lib/react-motion.js",
+  "main": "lib/inferno-motion.js",
   "peerDependencies": {
     "inferno": "^1.0.0-beta3"
   },
