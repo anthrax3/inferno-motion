@@ -7,9 +7,9 @@
     "inferno": "^1.0.0-beta3"
   },
   "devDependencies": {
-    "babel-browser-transform": "^0.1.0",
+    "babel-cli": "^6.16.0",
     "babel-core": "^6.17.0",
-    "babel-eslint": "^4.1.3",
+    "babel-eslint": "^6.0.0",
     "babel-loader": "^6.2.5",
     "babel-plugin-inferno": "^1.0.0-beta2",
     "babel-preset-es2015": "^6.16.0",
@@ -41,7 +41,7 @@
     "start": "node server.js",
     "build-demos": "webpack",
     "lint": "eslint --ext .js,.jsx .",
-    "prerelease": "rm -rf lib && babel src --out-dir lib && webpack --config webpack.prod.config.js",
+    "prerelease": "rm -rf lib && mkdir lib && babel src --out-dir lib && webpack --config webpack.prod.config.js",
     "test": "karma start ./karma.conf.js --single-run",
     "test:travis": "karma start ./karma.conf.js --single-run",
     "test:dev": "karma start ./karma.conf.js --no-single-run --auto-watch",
