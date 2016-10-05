@@ -30,11 +30,17 @@ var config = {
     extensions: ['', '.js', '.jsx']
   },
   externals: {
-    'react': {
+    'inferno': {
       root: 'Inferno',
       commonjs2: 'inferno',
       commonjs: 'inferno',
       amd: 'inferno'
+    },
+    'inferno-create-class': {
+      root: 'InfernoCreateClass',
+      commonjs2: 'inferno-create-class',
+      commonjs: 'inferno-create-class',
+      amd: 'inferno-create-class'
     }
   },
 };
