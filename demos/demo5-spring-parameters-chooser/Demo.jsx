@@ -111,14 +111,14 @@ const Demo = createClass({
                   max={300}
                   value={stiffness}
                   onMouseDown={this.handleMouseDownInput.bind(null, 'stiffness', i)}
-                  onChange={this.handleChange.bind(null, 'stiffness', i)} />
+                  onInput={this.handleChange.bind(null, 'stiffness', i)} />
                 <input
                   type="range"
                   min={0}
                   max={40}
                   value={damping}
                   onMouseDown={this.handleMouseDownInput.bind(null, 'damping', j)}
-                  onChange={this.handleChange.bind(null, 'damping', j)} />
+                  onInput={this.handleChange.bind(null, 'damping', j)} />
                 <Motion style={motionStyle}>
                   {({x, y}) => {
                     let thing;

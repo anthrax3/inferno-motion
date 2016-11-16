@@ -29,20 +29,32 @@ var config = {
   resolve: {
     extensions: ['', '.js', '.jsx']
   },
-  externals: {
-    'inferno': {
-      root: 'Inferno',
-      commonjs2: 'inferno',
-      commonjs: 'inferno',
-      amd: 'inferno'
+  externals: [
+    {
+      'inferno': {
+        root: 'inferno',
+        commonjs2: 'inferno',
+        commonjs: 'inferno',
+        amd: 'inferno'
+      }
     },
-    'inferno-create-class': {
-      root: 'InfernoCreateClass',
-      commonjs2: 'inferno-create-class',
-      commonjs: 'inferno-create-class',
-      amd: 'inferno-create-class'
+    {
+      'inferno-component': {
+        root: 'inferno-component',
+        commonjs2: 'inferno-component',
+        commonjs: 'inferno-component',
+        amd: 'inferno-component'
+      }
+    },
+    {
+      'inferno-create-class': {
+        root: 'inferno-create-class',
+        commonjs2: 'inferno-create-class',
+        commonjs: 'inferno-create-class',
+        amd: 'inferno-create-class'
+      }
     }
-  },
+  ],
 };
 
 module.exports = config;
