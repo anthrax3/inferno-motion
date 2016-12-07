@@ -32,7 +32,7 @@ var config = {
   externals: [
     {
       'inferno': {
-        root: 'inferno',
+        root: 'Inferno',
         commonjs2: 'inferno',
         commonjs: 'inferno',
         amd: 'inferno'
@@ -40,7 +40,7 @@ var config = {
     },
     {
       'inferno-component': {
-        root: 'inferno-component',
+        root: 'Inferno.Component',
         commonjs2: 'inferno-component',
         commonjs: 'inferno-component',
         amd: 'inferno-component'
@@ -48,13 +48,13 @@ var config = {
     },
     {
       'inferno-create-class': {
-        root: 'inferno-create-class',
+        root: 'Inferno.createClass',
         commonjs2: 'inferno-create-class',
         commonjs: 'inferno-create-class',
         amd: 'inferno-create-class'
       }
     }
-  ],
+  ]
 };
 
 module.exports = config;
