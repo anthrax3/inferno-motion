@@ -20,20 +20,37 @@ var config = {
   module: {
     loaders: [{
       test: /\.(js|jsx)/,
-      loader: 'babel-loader'
+      loader: 'babel'
     }]
   },
+  plugins: [
+    new webpack.optimize.OccurenceOrderPlugin(true)
+  ],
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['', '.js', '.jsx']
   },
-  externals: {
+  externals: [
+    {
       'inferno': {
         root: 'Inferno',
         commonjs2: 'inferno',
-        commonjs: ['inferno', 'inferno-component', 'inferno-create-class'],
+        commonjs: 'inferno',
         amd: 'inferno'
       },
+      'inferno-component': {
+        root: 'Inferno.Component',
+        commonjs2: 'inferno-component',
+        commonjs: 'inferno-component',
+        amd: 'inferno-component'
+      },
+      'inferno-create-class': {
+        root: 'Inferno.createClass',
+        commonjs2: 'inferno-create-class',
+        commonjs: 'inferno-create-class',
+        amd: 'inferno-create-class'
+      }
     }
+  ]
 };
 
 module.exports = config;
