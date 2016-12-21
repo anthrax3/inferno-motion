@@ -16,7 +16,7 @@ var config = {
     publicPath: 'build/',
     filename: 'inferno-motion.js',
     sourceMapFilename: 'inferno-motion.map',
-    library: 'InfernoMotion',
+    library: 'Inferno.Motion',
     libraryTarget: 'umd'
   },
   module: {
@@ -29,32 +29,27 @@ var config = {
   resolve: {
     extensions: ['', '.js', '.jsx']
   },
-  externals: [
-    {
-      'inferno': {
-        root: 'Inferno',
-        commonjs2: 'inferno',
-        commonjs: 'inferno',
-        amd: 'inferno'
-      }
+  externals: {
+    'inferno': {
+      root: 'Inferno',
+      commonjs2: 'inferno',
+      commonjs: 'inferno',
+      amd: 'inferno'
     },
-    {
-      'inferno-component': {
-        root: 'Inferno.Component',
-        commonjs2: 'inferno-component',
-        commonjs: 'inferno-component',
-        amd: 'inferno-component'
-      }
+    'inferno-component': {
+      root: 'Inferno.Component',
+      commonjs2: 'inferno-component',
+      commonjs: 'inferno-component',
+      amd: 'inferno-component'
     },
-    {
-      'inferno-create-class': {
-        root: 'Inferno.createClass',
-        commonjs2: 'inferno-create-class',
-        commonjs: 'inferno-create-class',
-        amd: 'inferno-create-class'
-      }
+    'inferno-create-class': {
+      root: 'Inferno.createClass',
+      commonjs2: 'inferno-create-class',
+      commonjs: 'inferno-create-class',
+      amd: 'inferno-create-class'
     }
-  ]
+  }
+
 };
 
 module.exports = config;
