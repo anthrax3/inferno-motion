@@ -1,13 +1,9 @@
 {
   "name": "inferno-motion",
-  "version": "0.4.7",
+  "version": "0.5.0",
   "description": "A spring that solves your animation problems.",
   "main": "lib/inferno-motion.js",
-  "peerDependencies": {
-    "inferno": "^1.0"
-  },
   "devDependencies": {
-    "babel": "^6.5.2",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.21.0",
     "babel-eslint": "^7.1.1",
@@ -18,19 +14,15 @@
     "babel-preset-stage-0": "^6.16.0",
     "codemirror": "^5.22.0",
     "css-loader": "^0.26.1",
-    "eslint": "^3.12.2",
-    "eslint-config-airbnb": "^13.0.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^3.0.2",
-    "eslint-plugin-react": "^6.8.0",
     "flow-bin": "^0.37.4",
     "flow-copy-source": "^1.1.0",
-    "inferno-create-class": "^1.0",
+    "inferno": "beta42",
+    "inferno-component": "^1.0.4",
+    "inferno-create-class": "^1.0.4",
     "inject-loader": "^2.0.1",
     "isparta-loader": "^2.0.0",
     "jasmine-core": "^2.5.2",
     "karma": "^1.3.0",
-    "karma-chrome-launcher": "^2.0.0",
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
     "karma-jasmine-diff-reporter": "^0.6.3",
@@ -75,6 +67,7 @@
   "author": "chenglou",
   "license": "MIT",
   "dependencies": {
+    "inferno": "^1.0.4",
     "performance-now": "^0.2.0",
     "raf": "^3.3.0"
   }

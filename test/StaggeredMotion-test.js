@@ -22,7 +22,6 @@ describe('StaggeredMotion', () => {
 
   afterEach(() => {
     container.innerHTML = '';
-    Inferno.render(null, container);
     document.body.removeChild(container);
   });
 

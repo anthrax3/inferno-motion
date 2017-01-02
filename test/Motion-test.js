@@ -26,7 +26,6 @@ describe('animation loop', () => {
 
   afterEach(() => {
     container.innerHTML = '';
-    Inferno.render(null, container);
     document.body.removeChild(container);
   });
 
@@ -138,6 +137,7 @@ describe('animation loop', () => {
 describe('Motion', () => {
   let Motion;
   let mockRaf;
+  let container;
 
   beforeEach(() => {
     mockRaf = createMockRaf();
@@ -149,11 +149,10 @@ describe('Motion', () => {
       document.body.appendChild(container);
   });
 
-    afterEach(() => {
-        container.innerHTML = '';
-        Inferno.render(null, container);
-        document.body.removeChild(container);
-    });
+  afterEach(() => {
+    container.innerHTML = '';
+    document.body.removeChild(container);
+  });
 
   it('should allow returning null from children function', () => {
     const App = createClass({
