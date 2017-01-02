@@ -1,24 +1,33 @@
-import React from 'react';
-import {spring} from '../src/react-motion';
+import Inferno from 'inferno';
+import createClass from 'inferno-create-class';
+import {spring} from '../src/inferno-motion';
 import createMockRaf from './createMockRaf';
-import TestUtils from 'react-addons-test-utils';
 
 const injector = require('inject!../src/StaggeredMotion');
 
 describe('StaggeredMotion', () => {
   let StaggeredMotion;
   let mockRaf;
+  let container;
 
   beforeEach(() => {
     mockRaf = createMockRaf();
     StaggeredMotion = injector({
       raf: mockRaf.raf,
       'performance-now': mockRaf.now,
-    });
+    }).default;
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => {
+    container.innerHTML = '';
+    Inferno.render(null, container);
+    document.body.removeChild(container);
   });
 
   it('should allow returning null from children function', () => {
-    const App = React.createClass({
+    const App = createClass({
       render() {
         // shouldn't throw here
         return (
@@ -28,13 +37,13 @@ describe('StaggeredMotion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
   });
 
   it('should not throw on unmount', () => {
     spyOn(console, 'error');
     let kill = () => {};
-    const App = React.createClass({
+    const App = createClass({
       getInitialState() {
         return {kill: false};
       },
@@ -49,7 +58,7 @@ describe('StaggeredMotion', () => {
             </StaggeredMotion>;
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
     mockRaf.step(2);
     kill();
     mockRaf.step(3);
@@ -58,7 +67,7 @@ describe('StaggeredMotion', () => {
 
   it('should allow a defaultStyles', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <StaggeredMotion
@@ -72,7 +81,7 @@ describe('StaggeredMotion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([0]);
     mockRaf.step(4);
@@ -87,7 +96,7 @@ describe('StaggeredMotion', () => {
 
   it('should accept different spring configs', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <StaggeredMotion
@@ -101,7 +110,7 @@ describe('StaggeredMotion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     mockRaf.step(99);
     expect(count).toEqual([
@@ -119,7 +128,7 @@ describe('StaggeredMotion', () => {
 
   it('should interpolate many values while staggering', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <StaggeredMotion
@@ -138,7 +147,7 @@ describe('StaggeredMotion', () => {
       },
     });
 
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([[0, 10, 0, 10]]);
     mockRaf.step(4);
@@ -153,7 +162,7 @@ describe('StaggeredMotion', () => {
 
   it('should work with nested Motions', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <StaggeredMotion defaultStyles={[{owner: 0}]} styles={() => [{owner: spring(10)}]}>
@@ -172,7 +181,7 @@ describe('StaggeredMotion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([0, 10]);
     mockRaf.step();
@@ -205,7 +214,7 @@ describe('StaggeredMotion', () => {
   // maybe shouldStopAnimation logic has a flaw
   it('should reach destination value', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <StaggeredMotion
@@ -223,7 +232,7 @@ describe('StaggeredMotion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([[0, 10, 0, 10]]);
     mockRaf.step(111);
@@ -241,7 +250,7 @@ describe('StaggeredMotion', () => {
   it('should support jumping to value', () => {
     let count = [];
     let setState = () => {};
-    const App = React.createClass({
+    const App = createClass({
       getInitialState() {
         return {p: false};
       },
@@ -259,7 +268,7 @@ describe('StaggeredMotion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([0]);
     setState({p: true});
@@ -290,7 +299,7 @@ describe('StaggeredMotion', () => {
   it('should behave well when many owner updates come in-between rAFs', () => {
     let count = [];
     let setState = () => {};
-    const App = React.createClass({
+    const App = createClass({
       getInitialState() {
         return {a: spring(0)};
       },
@@ -308,7 +317,7 @@ describe('StaggeredMotion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([{a: 0}]);
     setState({a: 400});

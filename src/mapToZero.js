@@ -3,7 +3,7 @@
 export default function mapToZero(obj) {
   let ret = {};
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
       ret[key] = 0;
     }
   }

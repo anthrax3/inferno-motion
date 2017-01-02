@@ -15,8 +15,8 @@ const Motion = createClass({
     const currentStyle = defaultStyle || stripStyle(style);
     const currentVelocity = mapToZero(currentStyle);
     return {
-      currentStyle: currentStyle,
-      currentVelocity: currentVelocity,
+      currentStyle,
+      currentVelocity,
       lastIdealStyle: currentStyle,
       lastIdealVelocity: currentVelocity,
     };
@@ -40,7 +40,7 @@ const Motion = createClass({
     let {currentStyle, currentVelocity, lastIdealStyle, lastIdealVelocity} = this.state;
 
     for (let key in destStyle) {
-      if (!destStyle.hasOwnProperty(key)) {
+      if (!Object.prototype.hasOwnProperty.call(destStyle, key)) {
         continue;
       }
 
@@ -116,7 +116,7 @@ const Motion = createClass({
       let newCurrentVelocity = {};
 
       for (let key in propsStyle) {
-        if (!propsStyle.hasOwnProperty(key)) {
+        if (!Object.prototype.hasOwnProperty.call(propsStyle, key)) {
           continue;
         }
 

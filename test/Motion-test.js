@@ -1,7 +1,7 @@
-import React from 'react';
-import {spring} from '../src/react-motion';
+import Inferno from 'inferno';
+import createClass from 'inferno-create-class';
+import {spring} from '../src/inferno-motion';
 import createMockRaf from './createMockRaf';
-import TestUtils from 'react-addons-test-utils';
 
 const {createSpy} = global.jasmine;
 
@@ -12,18 +12,27 @@ const injector = require('inject!../src/Motion');
 describe('animation loop', () => {
   let Motion;
   let mockRaf;
+  let container;
 
   beforeEach(() => {
     mockRaf = createMockRaf();
     Motion = injector({
       raf: mockRaf.raf,
       'performance-now': mockRaf.now,
-    });
+    }).default;
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => {
+    container.innerHTML = '';
+    Inferno.render(null, container);
+    document.body.removeChild(container);
   });
 
   it('should interpolate correctly when the timer is perfect', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <Motion defaultStyle={{a: 0}} style={{a: spring(10)}}>
@@ -35,7 +44,7 @@ describe('animation loop', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([0]);
     mockRaf.step(5);
@@ -51,7 +60,7 @@ describe('animation loop', () => {
 
   it('should work with negative numbers', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <Motion defaultStyle={{a: -10}} style={{a: spring(-100)}}>
@@ -63,7 +72,7 @@ describe('animation loop', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     mockRaf.step(5);
     expect(count).toEqual([
@@ -78,7 +87,7 @@ describe('animation loop', () => {
 
   it('should interpolate correctly when the timer is imperfect', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <Motion defaultStyle={{a: 0}} style={{a: spring(10)}}>
@@ -90,7 +99,7 @@ describe('animation loop', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([0]);
     mockRaf.step(10, 0);
@@ -135,23 +144,31 @@ describe('Motion', () => {
     Motion = injector({
       raf: mockRaf.raf,
       'performance-now': mockRaf.now,
-    });
+    }).default;
+      container = document.createElement('div');
+      document.body.appendChild(container);
   });
 
+    afterEach(() => {
+        container.innerHTML = '';
+        Inferno.render(null, container);
+        document.body.removeChild(container);
+    });
+
   it('should allow returning null from children function', () => {
-    const App = React.createClass({
+    const App = createClass({
       render() {
         // shouldn't throw here
         return <Motion style={{a: 0}}>{() => null}</Motion>;
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
   });
 
   it('should not throw on unmount', () => {
     spyOn(console, 'error');
     let kill = () => {};
-    const App = React.createClass({
+    const App = createClass({
       getInitialState() {
         return {kill: false};
       },
@@ -164,7 +181,7 @@ describe('Motion', () => {
           : <Motion defaultStyle={{a: 0}} style={{a: spring(10)}}>{() => null}</Motion>;
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
     mockRaf.step(2);
     kill();
     mockRaf.step(3);
@@ -173,7 +190,7 @@ describe('Motion', () => {
 
   it('should allow a defaultStyle', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <Motion defaultStyle={{a: 0}} style={{a: spring(10)}}>
@@ -185,7 +202,7 @@ describe('Motion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([0]);
     mockRaf.step(4);
@@ -200,7 +217,7 @@ describe('Motion', () => {
 
   it('should accept different spring configs', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <Motion
@@ -214,7 +231,7 @@ describe('Motion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     mockRaf.step(99);
     expect(count).toEqual([
@@ -232,7 +249,7 @@ describe('Motion', () => {
 
   it('should interpolate many values', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <Motion
@@ -247,7 +264,7 @@ describe('Motion', () => {
       },
     });
 
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([[0, 10]]);
     mockRaf.step(4);
@@ -262,7 +279,7 @@ describe('Motion', () => {
 
   it('should work with nested Motions', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <Motion defaultStyle={{owner: 0}} style={{owner: spring(10)}}>
@@ -281,7 +298,7 @@ describe('Motion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([0, 10]);
     mockRaf.step();
@@ -312,7 +329,7 @@ describe('Motion', () => {
 
   it('should reach destination value', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <Motion defaultStyle={{a: 0}} style={{a: spring(400)}}>
@@ -324,7 +341,7 @@ describe('Motion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([0]);
     mockRaf.step(111);
@@ -342,7 +359,7 @@ describe('Motion', () => {
   it('should support jumping to value', () => {
     let count = [];
     let setState = () => {};
-    const App = React.createClass({
+    const App = createClass({
       getInitialState() {
         return {p: false};
       },
@@ -360,7 +377,7 @@ describe('Motion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([0]);
     setState({p: true});
@@ -392,7 +409,7 @@ describe('Motion', () => {
     const onRest = createSpy('onRest');
     let result = 0;
 
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <Motion
@@ -411,7 +428,7 @@ describe('Motion', () => {
       },
     });
 
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     mockRaf.step(22);
 
@@ -425,17 +442,15 @@ describe('Motion', () => {
     let resultA = 0;
     let resultB = 0;
 
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <Motion
             defaultStyle={{a: 0, b: 0}}
-            style={
-              {
-                a: spring(5, {stiffness: 380, damping: 18, precision: 1}),
-                b: spring(500, {stiffness: 380, damping: 18, precision: 1}),
-              }
-            }
+            style={{
+              a: spring(5, {stiffness: 380, damping: 18, precision: 1}),
+              b: spring(500, {stiffness: 380, damping: 18, precision: 1}),
+            }}
             onRest={onRest}
           >
             {
@@ -450,7 +465,7 @@ describe('Motion', () => {
       },
     });
 
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     mockRaf.step(22);
 
@@ -465,7 +480,7 @@ describe('Motion', () => {
 
     let setState;
 
-    const App = React.createClass({
+    const App = createClass({
       getInitialState() {
         return {a: spring(0)};
       },
@@ -485,7 +500,7 @@ describe('Motion', () => {
       },
     });
 
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
     mockRaf.step();
     setState({a: 50});
     mockRaf.step();
@@ -496,7 +511,7 @@ describe('Motion', () => {
   it('should behave well when many owner updates come in-between rAFs', () => {
     let count = [];
     let setState = () => {};
-    const App = React.createClass({
+    const App = createClass({
       getInitialState() {
         return {a: spring(0)};
       },
@@ -514,7 +529,7 @@ describe('Motion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([{a: 0}]);
     setState({a: 400});

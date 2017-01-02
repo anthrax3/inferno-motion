@@ -28,8 +28,8 @@ const StaggeredMotion = createClass({
     const currentStyles = defaultStyles || styles().map(stripStyle);
     const currentVelocities = currentStyles.map(currentStyle => mapToZero(currentStyle));
     return {
-      currentStyles: currentStyles,
-      currentVelocities: currentVelocities,
+      currentStyles,
+      currentVelocities,
       lastIdealStyles: currentStyles,
       lastIdealVelocities: currentVelocities,
     };
@@ -56,7 +56,7 @@ const StaggeredMotion = createClass({
       let dirty = false;
 
       for (let key in unreadPropStyle) {
-        if (!unreadPropStyle.hasOwnProperty(key)) {
+        if (!Object.prototype.hasOwnProperty.call(unreadPropStyle, key)) {
           continue;
         }
 
@@ -134,7 +134,7 @@ const StaggeredMotion = createClass({
         let newLastIdealVelocity = {};
 
         for (let key in destStyle) {
-          if (!destStyle.hasOwnProperty(key)) {
+          if (!Object.prototype.hasOwnProperty.call(destStyle, key)) {
             continue;
           }
 

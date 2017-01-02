@@ -1,36 +1,45 @@
-import React from 'react';
-import {spring} from '../src/react-motion';
+import Inferno from 'inferno';
+import createClass from 'inferno-create-class';
+import {spring} from '../src/inferno-motion';
 import createMockRaf from './createMockRaf';
-import TestUtils from 'react-addons-test-utils';
 
 const injector = require('inject!../src/TransitionMotion');
 
 describe('TransitionMotion', () => {
   let TransitionMotion;
   let mockRaf;
+  let container;
 
   beforeEach(() => {
     mockRaf = createMockRaf();
     TransitionMotion = injector({
       raf: mockRaf.raf,
       'performance-now': mockRaf.now,
-    });
+    }).default;
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => {
+    container.innerHTML = '';
+    Inferno.render(null, container);
+    document.body.removeChild(container);
   });
 
   it('should allow returning null from children function', () => {
-    const App = React.createClass({
+    const App = createClass({
       render() {
         // shouldn't throw here
         return <TransitionMotion styles={[{key: '1', style: {}}]}>{() => null}</TransitionMotion>;
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
   });
 
   it('should not throw on unmount', () => {
     spyOn(console, 'error');
     let kill = () => {};
-    const App = React.createClass({
+    const App = createClass({
       getInitialState() {
         return {kill: false};
       },
@@ -47,7 +56,7 @@ describe('TransitionMotion', () => {
             </TransitionMotion>;
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
     mockRaf.step(2);
     kill();
     mockRaf.step(3);
@@ -58,7 +67,7 @@ describe('TransitionMotion', () => {
     // similar as above test
     spyOn(console, 'error');
     let kill = () => {};
-    const App = React.createClass({
+    const App = createClass({
       getInitialState() {
         return {kill: false};
       },
@@ -75,7 +84,7 @@ describe('TransitionMotion', () => {
             </TransitionMotion>;
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
     mockRaf.step(2);
     kill();
     mockRaf.step(3);
@@ -84,7 +93,7 @@ describe('TransitionMotion', () => {
 
   it('should allow a defaultStyles', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <TransitionMotion
@@ -99,7 +108,7 @@ describe('TransitionMotion', () => {
       },
     });
 
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([{a: 0}]);
     mockRaf.step(4);
@@ -114,7 +123,7 @@ describe('TransitionMotion', () => {
 
   it('should accept different spring configs', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <TransitionMotion
@@ -130,7 +139,7 @@ describe('TransitionMotion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     mockRaf.step(99);
     expect(count).toEqual([
@@ -148,7 +157,7 @@ describe('TransitionMotion', () => {
 
   it('should interpolate many values', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <TransitionMotion
@@ -169,7 +178,7 @@ describe('TransitionMotion', () => {
       },
     });
 
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([[
       {key: '1', style: {a: 0, b: 10}, data: undefined},
@@ -200,9 +209,47 @@ describe('TransitionMotion', () => {
     ]);
   });
 
+  it('should invoke didLeave in last frame', () => {
+    let count = [];
+    let setState = () => {};
+    const App = createClass({
+      getInitialState() {
+        return {
+          val: [{key: '1', style: {x: spring(10)}}],
+        };
+      },
+      componentWillMount() {
+        setState = this.setState.bind(this);
+      },
+      render() {
+        return (
+          <TransitionMotion
+            styles={this.state.val}
+            willEnter={() => ({x: 0})}
+            willLeave={() => ({x: spring(0)})}
+            didLeave={(a) => { count.push(a); }}>
+            {() => {
+              return null;
+            }}
+          </TransitionMotion>
+        );
+      },
+    });
+    Inferno.render(<App/>, container);
+
+    expect(count).toEqual([]);
+    setState({
+      val: [{key: '2', style: {x: 10}}],
+    });
+    mockRaf.step(999);
+    expect(count).toEqual([
+      {key: '1', data: undefined},
+    ]);
+  });
+
   it('should work with nested TransitionMotions', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <TransitionMotion
@@ -225,7 +272,7 @@ describe('TransitionMotion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([
       {x: 0},
@@ -259,7 +306,7 @@ describe('TransitionMotion', () => {
 
   it('should reach destination value', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <TransitionMotion
@@ -273,7 +320,7 @@ describe('TransitionMotion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([0]);
     // Move "time" until we reach the final styles value
@@ -291,7 +338,7 @@ describe('TransitionMotion', () => {
   it('should support jumping to value', () => {
     let count = [];
     let setState = () => {};
-    const App = React.createClass({
+    const App = createClass({
       getInitialState() {
         return {p: false};
       },
@@ -310,7 +357,7 @@ describe('TransitionMotion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([{x: 0}]);
     setState({p: true});
@@ -341,7 +388,7 @@ describe('TransitionMotion', () => {
   it('should behave well when many owner updates come in-between rAFs', () => {
     let count = [];
     let setState = () => {};
-    const App = React.createClass({
+    const App = createClass({
       getInitialState() {
         return {
           val: [{key: '1', style: {x: spring(0)}}],
@@ -364,7 +411,7 @@ describe('TransitionMotion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([[{key: '1', style: {x: 0}, data: undefined}]]);
     setState({
@@ -418,7 +465,7 @@ describe('TransitionMotion', () => {
   it('should behave well when many owner styles function updates come in-between rAFs', () => {
     let count = [];
     let setState = () => {};
-    const App = React.createClass({
+    const App = createClass({
       getInitialState() {
         return {
           val: [{key: '1', style: {x: spring(0)}}],
@@ -441,7 +488,7 @@ describe('TransitionMotion', () => {
         );
       },
     });
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([[{key: '1', style: {x: 0}, data: undefined}]]);
     setState({
@@ -494,7 +541,7 @@ describe('TransitionMotion', () => {
 
   it('should transition things in/out at the beginning', () => {
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <TransitionMotion
@@ -514,7 +561,7 @@ describe('TransitionMotion', () => {
       },
     });
 
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([
       [
@@ -552,7 +599,7 @@ describe('TransitionMotion', () => {
   it('should eliminate things in/out at the beginning', () => {
     // similar to previous test, but without willEnter/leave
     let count = [];
-    const App = React.createClass({
+    const App = createClass({
       render() {
         return (
           <TransitionMotion
@@ -570,7 +617,7 @@ describe('TransitionMotion', () => {
       },
     });
 
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     expect(count).toEqual([[
       {key: '1', style: {a: 0, b: 10}, data: undefined},
@@ -596,7 +643,7 @@ describe('TransitionMotion', () => {
   it('should carry around the ignored values', () => {
     let count = [];
     let setState = () => {};
-    const App = React.createClass({
+    const App = createClass({
       getInitialState() {
         return {
           val: [
@@ -627,7 +674,7 @@ describe('TransitionMotion', () => {
       },
     });
 
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     // somewhat defined behavior: notice that data is 3, not 1. For simplicity
     // of current implementation we've decided not to render data: [1] from
@@ -700,7 +747,7 @@ describe('TransitionMotion', () => {
     let count = [];
     let prevValues = [];
     let setState = () => {};
-    const App = React.createClass({
+    const App = createClass({
       getInitialState() {
         return {
           val: [
@@ -734,7 +781,7 @@ describe('TransitionMotion', () => {
       },
     });
 
-    TestUtils.renderIntoDocument(<App />);
+    Inferno.render(<App/>, container);
 
     // somewhat defined behavior: notice that data is 3, not 1. For simplicity
     // of current implementation we've decided not to render data: [1] from

@@ -39,7 +39,7 @@ module.exports = function (config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
-      'node_modules/babel-core/browser-polyfill.js',
+      'node_modules/babel-polyfill/dist/polyfill.js',
       'test/index.js',
     ],
     webpack: webpackConfig,
@@ -81,7 +81,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: false,
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
     singleRun: true,
   });
 };
