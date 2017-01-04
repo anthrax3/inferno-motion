@@ -18,7 +18,6 @@
     "flow-copy-source": "^1.1.0",
     "inferno": "beta42",
     "inferno-component": "^1.0.4",
-    "inferno-create-class": "^1.0.4",
     "inject-loader": "^2.0.1",
     "isparta-loader": "^2.0.0",
     "jasmine-core": "^2.5.2",
@@ -68,6 +67,7 @@
   "license": "MIT",
   "dependencies": {
     "inferno": "^1.0.4",
+    "inferno-create-class": "^1.0.4",
     "performance-now": "^0.2.0",
     "raf": "^3.3.0"
   }
