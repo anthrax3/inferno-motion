@@ -1,6 +1,6 @@
 {
   "name": "inferno-motion",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "A spring that solves your animation problems.",
   "main": "lib/inferno-motion.js",
   "devDependencies": {
@@ -8,7 +8,7 @@
     "babel-core": "^6.21.0",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.10",
-    "babel-plugin-inferno": "^1.4.0",
+    "babel-plugin-inferno": "^1.5.0",
     "babel-polyfill": "^6.20.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-0": "^6.16.0",
@@ -64,10 +64,10 @@
   "author": "chenglou",
   "license": "MIT",
   "dependencies": {
-    "inferno": "^1.0.6",
-    "inferno-component": "^1.0.6",
-    "inferno-create-class": "^1.0.6",
-    "performance-now": "^1.0.1",
+    "inferno": "^1.1.1",
+    "inferno-component": "^1.1.1",
+    "inferno-create-class": "^1.1.1",
+    "performance-now": "^2.0.0",
     "raf": "^3.3.0"
   }
 }
