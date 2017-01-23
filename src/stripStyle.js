@@ -6,7 +6,7 @@
 
 export default function stripStyle(style) {
   let ret = {};
-  for (const key in style) {
+  for (let key in style) {
     if (!Object.prototype.hasOwnProperty.call(style, key)) {
       continue;
     }

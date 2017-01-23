@@ -5,7 +5,6 @@ import defaultNow from 'performance-now';
 import defaultRaf from 'raf';
 import shouldStopAnimation from './shouldStopAnimation';
 import createClass from 'inferno-create-class';
-import Children from './children';
 
 const msPerFrame = 1000 / 60;
 
@@ -228,8 +227,7 @@ const StaggeredMotion = createClass({
   },
 
   render()               {
-    const renderedChildren = this.props.children(this.state.currentStyles);
-    return renderedChildren && Children.only(renderedChildren);
+    return this.props.children(this.state.currentStyles);
   },
 });
 

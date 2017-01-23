@@ -5,7 +5,6 @@ import defaultNow from 'performance-now';
 import defaultRaf from 'raf';
 import shouldStopAnimation from './shouldStopAnimation';
 import createClass from 'inferno-create-class';
-import Children from './children';
 
 const msPerFrame = 1000 / 60;
 
@@ -204,8 +203,7 @@ const Motion = createClass({
   },
 
   render() {
-    const renderedChildren = this.props.children(this.state.currentStyle);
-    return renderedChildren && Children.only(renderedChildren);
+    return this.props.children(this.state.currentStyle);
   },
 });
 

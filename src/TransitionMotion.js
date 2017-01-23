@@ -6,7 +6,6 @@ import defaultNow from 'performance-now';
 import defaultRaf from 'raf';
 import shouldStopAnimation from './shouldStopAnimation';
 import createClass from 'inferno-create-class';
-import Children from './children';
 
 const msPerFrame = 1000 / 60;
 
@@ -470,8 +469,7 @@ const TransitionMotion = createClass({
       this.unreadPropStyles,
       this.state.currentStyles,
     );
-    const renderedChildren = this.props.children(hydratedStyles);
-    return renderedChildren && Children.only(renderedChildren);
+    return this.props.children(hydratedStyles);
   },
 });
 

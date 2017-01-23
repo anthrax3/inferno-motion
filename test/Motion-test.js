@@ -5,7 +5,7 @@ import createMockRaf from './createMockRaf';
 
 const {createSpy} = global.jasmine;
 
-const injector = require('inject!../src/Motion');
+const injector = require('inject-loader!../src/Motion');
 
 // temporarily putting the animation loop test here
 // TODO: put it in the correct file

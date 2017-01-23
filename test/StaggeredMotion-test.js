@@ -3,7 +3,7 @@ import createClass from 'inferno-create-class';
 import {spring} from '../src/inferno-motion';
 import createMockRaf from './createMockRaf';
 
-const injector = require('inject!../src/StaggeredMotion');
+const injector = require('inject-loader!../src/StaggeredMotion');
 
 describe('StaggeredMotion', () => {
   let StaggeredMotion;

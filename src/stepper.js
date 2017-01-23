@@ -1,5 +1,3 @@
-/*       */
-
 // stepper is used a lot. Saves allocation to return the same array wrapper.
 // This is fine and danger-free against mutations because the callsite
 // immediately destructures it and gets the numbers inside without passing the

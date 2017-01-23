@@ -9,7 +9,7 @@ require('babel-polyfill');
 var webpack = require('webpack');
 var path = require('path');
 
-var loaders = ['babel'];
+var loaders = ['babel-loader'];
 var port = process.env.PORT || 3000;
 
 var devtool;
@@ -32,7 +32,6 @@ var entry = {
 if (process.env.NODE_ENV === 'development') {
   // devtool = 'eval-source-map';
   // loaders = ['react-hot'].concat(loaders);
-  loaders = loaders;
   plugins = plugins.concat([
     new webpack.HotModuleReplacementPlugin()
   ]);
@@ -44,11 +43,6 @@ if (process.env.NODE_ENV === 'development') {
     ];
     return result;
   }, {});
-} else {
-  // devtool = 'source-map';
-  plugins = plugins.concat([
-    new webpack.optimize.OccurenceOrderPlugin()
-  ]);
 }
 
 module.exports = {
@@ -68,12 +62,9 @@ module.exports = {
       test: /\.css$/,
       loaders: ['style', 'css']
     }],
-    noParse: [
-      path.join(__dirname, 'node_modules', 'babel-core', 'browser.min.js')
-    ],
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['.js', '.jsx']
   },
   plugins: plugins
 };

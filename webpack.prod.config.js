@@ -20,14 +20,11 @@ var config = {
   module: {
     loaders: [{
       test: /\.(js|jsx)/,
-      loader: 'babel'
+      loader: 'babel-loader'
     }]
   },
-  plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(true)
-  ],
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['.js', '.jsx']
   },
   externals: {
     'inferno': {
