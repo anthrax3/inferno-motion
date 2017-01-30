@@ -7,5 +7,5 @@ const defaultConfig = {
 };
 
 export default function spring(val, config) {
-  return Object.assign({}, defaultConfig, config, val);
+  return Object.assign({}, defaultConfig, config, { val: val });
 }
