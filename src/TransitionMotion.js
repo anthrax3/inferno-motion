@@ -201,6 +201,7 @@ const TransitionMotion = createClass({
       willEnter,
       willLeave,
       didLeave,
+      didLeave,
       oldMergedPropsStyles,
       destStyles,
       oldCurrentStyles,
@@ -292,9 +293,19 @@ const TransitionMotion = createClass({
     if (this.unmounting) {
       return;
     }
+
     // TODO: when config is {a: 10} and dest is {a: 10} do we raf once and
     // call cb? No, otherwise accidental parent rerender causes cb trigger
     this.animationID = defaultRaf((timestamp) => {
+      // https://github.com/chenglou/react-motion/pull/420
+      // > if execution passes the conditional if (this.unmounting), then
+      // executes async defaultRaf and after that component unmounts and after
+      // that the callback of defaultRaf is called, then setState will be called
+      // on unmounted component.
+      if (this.unmounting) {
+        return;
+      }
+
       const propStyles = this.props.styles;
       let destStyles = typeof propStyles === 'function'
         ? propStyles(rehydrateStyles(
@@ -449,7 +460,7 @@ const TransitionMotion = createClass({
       this.unreadPropStyles = styles;
     }
 
-    if (this.animationID == null) {
+    if (this.animationID === null) {
       this.prevTime = defaultNow();
       this.startAnimationIfNecessary();
     }
@@ -457,7 +468,7 @@ const TransitionMotion = createClass({
 
   componentWillUnmount() {
     this.unmounting = true;
-    if (this.animationID != null) {
+    if (this.animationID !== null) {
       defaultRaf.cancel(this.animationID);
       this.animationID = null;
     }
