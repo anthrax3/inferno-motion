@@ -38,12 +38,6 @@ var config = {
       commonjs2: 'inferno-component',
       commonjs: 'inferno-component',
       amd: 'inferno-component'
-    },
-    'inferno-create-class': {
-      root: 'Inferno.createClass',
-      commonjs2: 'inferno-create-class',
-      commonjs: 'inferno-create-class',
-      amd: 'inferno-create-class'
     }
   }
 };

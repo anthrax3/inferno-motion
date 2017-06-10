@@ -13,7 +13,6 @@ export default class Demo extends Component {
 		this.show()
 	}
 	show() {
-	  debugger;
 		this.setState({shown: !this.state.shown})
 	}
 	render() {

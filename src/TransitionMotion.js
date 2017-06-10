@@ -5,7 +5,8 @@ import mergeDiff from './mergeDiff';
 import defaultNow from 'performance-now';
 import defaultRaf from 'raf';
 import shouldStopAnimation from './shouldStopAnimation';
-import createClass from 'inferno-create-class';
+import Component from 'inferno-component';
+import Motion from './StaggeredMotion';
 
 const msPerFrame = 1000 / 60;
 
@@ -155,19 +156,21 @@ function mergeAndSync(
   return [newMergedPropsStyles, newCurrentStyles, newCurrentVelocities, newLastIdealStyles, newLastIdealVelocities];
 }
 
-const TransitionMotion = createClass({
-  getDefaultProps() {
-    return {
-      willEnter: styleThatEntered => stripStyle(styleThatEntered.style),
-      // recall: returning null makes the current unmounting TransitionStyle
-      // disappear immediately
-      willLeave: () => null,
-      didLeave: () => {},
-    };
-  },
+export default class TransitionMotion extends Component {
+  static defaultProps = {
+    willEnter: styleThatEntered => stripStyle(styleThatEntered.style),
+    // recall: returning null makes the current unmounting TransitionStyle
+    // disappear immediately
+    willLeave: () => null,
+    didLeave: () => {},
+  };
 
-  getInitialState() {
-    const {defaultStyles, styles, willEnter, willLeave, didLeave} = this.props;
+  constructor(props) {
+    super(props);
+    this.state = TransitionMotion.defaultState(props);
+  }
+
+  static defaultState({defaultStyles, styles, willEnter, willLeave, didLeave}) {
     const destStyles = typeof styles === 'function' ? styles(defaultStyles) : styles;
 
     // this is special. for the first time around, we don't have a comparison
@@ -195,7 +198,7 @@ const TransitionMotion = createClass({
       ? destStyles.map(s => mapToZero(s.style))
       : defaultStyles.map(s => mapToZero(s.style));
     const [mergedPropsStyles, currentStyles, currentVelocities, lastIdealStyles, lastIdealVelocities] = mergeAndSync(
-      // Because this is an old-style React.createClass component, Flow doesn't
+      // Because this is an old-style createReactClass component, Flow doesn't
       // understand that the willEnter and willLeave props have default values
       // and will always be present.
       willEnter,
@@ -217,22 +220,12 @@ const TransitionMotion = createClass({
       lastIdealVelocities,
       mergedPropsStyles,
     };
-  },
+  }
 
-  unmounting: (false),
-  animationID: (null),
-  prevTime: 0,
-  accumulatedTime: 0,
-  // it's possible that currentStyle's value is stale: if props is immediately
-  // changed from 0 to 400 to spring(0) again, the async currentStyle is still
-  // at 0 (didn't have time to tick and interpolate even once). If we naively
-  // compare currentStyle with destVal it'll be 0 === 0 (no animation, stop).
-  // In reality currentStyle should be 400
-  unreadPropStyles: (null                         ),
   // after checking for unreadPropStyles != null, we manually go set the
   // non-interpolating values (those that are a number, without a spring
   // config)
-  clearUnreadPropStyle(unreadPropStyles                        )       {
+  clearUnreadPropStyle(unreadPropStyles) {
     let [mergedPropsStyles, currentStyles, currentVelocities, lastIdealStyles, lastIdealVelocities] = mergeAndSync(
       (this.props.willEnter),
       (this.props.willLeave),
@@ -287,7 +280,7 @@ const TransitionMotion = createClass({
       lastIdealStyles,
       lastIdealVelocities,
     });
-  },
+  }
 
   startAnimationIfNecessary() {
     if (this.unmounting) {
@@ -317,11 +310,11 @@ const TransitionMotion = createClass({
 
       // check if we need to animate in the first place
       if (shouldStopAnimationAll(
-        this.state.currentStyles,
-        destStyles,
-        this.state.currentVelocities,
-        this.state.mergedPropsStyles,
-      )) {
+          this.state.currentStyles,
+          destStyles,
+          this.state.currentVelocities,
+          this.state.mergedPropsStyles,
+        )) {
         // no need to cancel animationID here; shouldn't have any in flight
         this.animationID = null;
         this.accumulatedTime = 0;
@@ -434,12 +427,12 @@ const TransitionMotion = createClass({
 
       this.startAnimationIfNecessary();
     });
-  },
+  }
 
   componentDidMount() {
     this.prevTime = defaultNow();
     this.startAnimationIfNecessary();
-  },
+  }
 
   componentWillReceiveProps(props) {
     if (this.unreadPropStyles) {
@@ -464,7 +457,7 @@ const TransitionMotion = createClass({
       this.prevTime = defaultNow();
       this.startAnimationIfNecessary();
     }
-  },
+  }
 
   componentWillUnmount() {
     this.unmounting = true;
@@ -472,7 +465,7 @@ const TransitionMotion = createClass({
       defaultRaf.cancel(this.animationID);
       this.animationID = null;
     }
-  },
+  }
 
   render() {
     const hydratedStyles = rehydrateStyles(
@@ -481,7 +474,6 @@ const TransitionMotion = createClass({
       this.state.currentStyles,
     );
     return this.props.children(hydratedStyles);
-  },
-});
+  }
+}
 
-export default TransitionMotion;

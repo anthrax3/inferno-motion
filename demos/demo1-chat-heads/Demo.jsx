@@ -1,38 +1,38 @@
-import Inferno from 'inferno';
-import createClass from 'inferno-create-class';
+import Component from 'inferno-component';
 import {StaggeredMotion, spring, presets} from '../../src/inferno-motion';
 import range from 'lodash.range';
 
-const Demo = createClass({
-  getInitialState() {
-    return {x: 250, y: 300};
-  },
+export default class Demo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {x: 250, y: 300};
+  };
 
   componentDidMount() {
     window.addEventListener('mousemove', this.handleMouseMove);
     window.addEventListener('touchmove', this.handleTouchMove);
-  },
+  };
 
-  handleMouseMove({pageX: x, pageY: y}) {
+  handleMouseMove = ({pageX: x, pageY: y}) => {
     this.setState({x, y});
-  },
+  };
 
-  handleTouchMove({touches}) {
+  handleTouchMove = ({touches}) => {
     this.handleMouseMove(touches[0]);
-  },
+  };
 
-  getStyles(prevStyles) {
+  getStyles = (prevStyles) => {
     // `prevStyles` is the interpolated value of the last tick
     const endValue = prevStyles.map((_, i) => {
       return i === 0
         ? this.state
         : {
-            x: spring(prevStyles[i - 1].x, presets.gentle),
-            y: spring(prevStyles[i - 1].y, presets.gentle),
-          };
+          x: spring(prevStyles[i - 1].x, presets.gentle),
+          y: spring(prevStyles[i - 1].y, presets.gentle),
+        };
     });
     return endValue;
-  },
+  };
 
   render() {
     return (
@@ -55,7 +55,5 @@ const Demo = createClass({
         }
       </StaggeredMotion>
     );
-  },
-});
-
-export default Demo;
+  };
+}

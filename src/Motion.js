@@ -1,16 +1,25 @@
+import Component from 'inferno-component';
 import mapToZero from './mapToZero';
 import stripStyle from './stripStyle';
 import stepper from './stepper';
 import defaultNow from 'performance-now';
 import defaultRaf from 'raf';
 import shouldStopAnimation from './shouldStopAnimation';
-import createClass from 'inferno-create-class';
 
 const msPerFrame = 1000 / 60;
 
-const Motion = createClass({
-  getInitialState() {
-    const {defaultStyle, style} = this.props;
+export default class Motion extends Component {
+  constructor(props) {
+    super(props);
+    this.wasAnimating = false;
+    this.animationID = null;
+    this.prevTime = 0;
+    this.accumulatedTime = 0;
+    this.unreadPropStyle = null;
+    this.state = Motion.defaultState(props);
+  }
+
+  static defaultState({defaultStyle, style}) {
     const currentStyle = defaultStyle || stripStyle(style);
     const currentVelocity = mapToZero(currentStyle);
     return {
@@ -19,18 +28,13 @@ const Motion = createClass({
       lastIdealStyle: currentStyle,
       lastIdealVelocity: currentVelocity,
     };
-  },
+  }
 
-  wasAnimating: false,
-  animationID: (null),
-  prevTime: 0,
-  accumulatedTime: 0,
   // it's possible that currentStyle's value is stale: if props is immediately
   // changed from 0 to 400 to spring(0) again, the async currentStyle is still
   // at 0 (didn't have time to tick and interpolate even once). If we naively
   // compare currentStyle with destVal it'll be 0 === 0 (no animation, stop).
   // In reality currentStyle should be 400
-  unreadPropStyle: (null        ),
   // after checking for unreadPropStyle != null, we manually go set the
   // non-interpolating values (those that are a number, without a spring
   // config)
@@ -63,7 +67,7 @@ const Motion = createClass({
     if (dirty) {
       this.setState({currentStyle, currentVelocity, lastIdealStyle, lastIdealVelocity});
     }
-  },
+  };
 
   startAnimationIfNecessary() {
     // TODO: when config is {a: 10} and dest is {a: 10} do we raf once and
@@ -175,12 +179,12 @@ const Motion = createClass({
 
       this.startAnimationIfNecessary();
     });
-  },
+  };
 
   componentDidMount() {
     this.prevTime = defaultNow();
     this.startAnimationIfNecessary();
-  },
+  }
 
   componentWillReceiveProps(props) {
     if (this.unreadPropStyle != null) {
@@ -193,18 +197,16 @@ const Motion = createClass({
       this.prevTime = defaultNow();
       this.startAnimationIfNecessary();
     }
-  },
+  }
 
   componentWillUnmount() {
     if (this.animationID != null) {
       defaultRaf.cancel(this.animationID);
       this.animationID = null;
     }
-  },
+  }
 
   render() {
     return this.props.children(this.state.currentStyle);
-  },
-});
-
-export default Motion;
+  }
+}

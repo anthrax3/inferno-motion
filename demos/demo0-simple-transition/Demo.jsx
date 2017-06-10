@@ -1,20 +1,20 @@
-import Inferno from 'inferno';
-import createClass from 'inferno-create-class';
+import Component from 'inferno-component';
 import {Motion, spring} from '../../src/inferno-motion';
 
-const Demo = createClass({
-  getInitialState() {
-    return {open: false};
-  },
+export default class Demo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {open: false};
+  };
 
-  handleMouseDown() {
+  handleMouseDown = () => {
     this.setState({open: !this.state.open});
-  },
+  };
 
-  handleTouchStart(e) {
+  handleTouchStart = (e) => {
     e.preventDefault();
     this.handleMouseDown();
-  },
+  };
 
   render() {
     return (
@@ -39,7 +39,5 @@ const Demo = createClass({
         </Motion>
       </div>
     );
-  },
-});
-
-export default Demo;
+  };
+}

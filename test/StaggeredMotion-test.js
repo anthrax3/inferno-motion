@@ -1,5 +1,6 @@
+/* eslint-disable class-methods-use-this */
 import Inferno from 'inferno';
-import createClass from 'inferno-create-class';
+import Component from 'inferno-component';
 import {spring} from '../src/inferno-motion';
 import createMockRaf from './createMockRaf';
 
@@ -26,7 +27,7 @@ describe('StaggeredMotion', () => {
   });
 
   it('should allow returning null from children function', () => {
-    const App = createClass({
+    class App extends Component {
       render() {
         // shouldn't throw here
         return (
@@ -34,29 +35,33 @@ describe('StaggeredMotion', () => {
             {() => null}
           </StaggeredMotion>
         );
-      },
-    });
+      }
+    }
     Inferno.render(<App/>, container);
   });
 
   it('should not throw on unmount', () => {
     spyOn(console, 'error');
     let kill = () => {};
-    const App = createClass({
-      getInitialState() {
-        return {kill: false};
-      },
+    class App extends Component {
+      constructor() {
+        super();
+
+        this.state = {
+          kill: false,
+        };
+      }
       componentWillMount() {
         kill = () => this.setState({kill: true});
-      },
+      }
       render() {
         return this.state.kill
           ? null
           : <StaggeredMotion defaultStyles={[{a: 0}]} styles={() => [{a: spring(10)}]}>
               {() => null}
             </StaggeredMotion>;
-      },
-    });
+      }
+    }
     Inferno.render(<App/>, container);
     mockRaf.step(2);
     kill();
@@ -66,7 +71,7 @@ describe('StaggeredMotion', () => {
 
   it('should allow a defaultStyles', () => {
     let count = [];
-    const App = createClass({
+    class App extends Component {
       render() {
         return (
           <StaggeredMotion
@@ -78,8 +83,8 @@ describe('StaggeredMotion', () => {
             }}
           </StaggeredMotion>
         );
-      },
-    });
+      }
+    }
     Inferno.render(<App/>, container);
 
     expect(count).toEqual([0]);
@@ -95,7 +100,7 @@ describe('StaggeredMotion', () => {
 
   it('should accept different spring configs', () => {
     let count = [];
-    const App = createClass({
+    class App extends Component {
       render() {
         return (
           <StaggeredMotion
@@ -107,8 +112,8 @@ describe('StaggeredMotion', () => {
             }}
           </StaggeredMotion>
         );
-      },
-    });
+      }
+    }
     Inferno.render(<App/>, container);
 
     mockRaf.step(99);
@@ -127,7 +132,7 @@ describe('StaggeredMotion', () => {
 
   it('should interpolate many values while staggering', () => {
     let count = [];
-    const App = createClass({
+    class App extends Component {
       render() {
         return (
           <StaggeredMotion
@@ -143,8 +148,8 @@ describe('StaggeredMotion', () => {
             }}
           </StaggeredMotion>
         );
-      },
-    });
+      }
+    }
 
     Inferno.render(<App/>, container);
 
@@ -161,7 +166,7 @@ describe('StaggeredMotion', () => {
 
   it('should work with nested Motions', () => {
     let count = [];
-    const App = createClass({
+    class App extends Component {
       render() {
         return (
           <StaggeredMotion defaultStyles={[{owner: 0}]} styles={() => [{owner: spring(10)}]}>
@@ -178,8 +183,8 @@ describe('StaggeredMotion', () => {
             }}
           </StaggeredMotion>
         );
-      },
-    });
+      }
+    }
     Inferno.render(<App/>, container);
 
     expect(count).toEqual([0, 10]);
@@ -213,7 +218,7 @@ describe('StaggeredMotion', () => {
   // maybe shouldStopAnimation logic has a flaw
   it('should reach destination value', () => {
     let count = [];
-    const App = createClass({
+    class App extends Component {
       render() {
         return (
           <StaggeredMotion
@@ -229,8 +234,8 @@ describe('StaggeredMotion', () => {
             }}
           </StaggeredMotion>
         );
-      },
-    });
+      }
+    }
     Inferno.render(<App/>, container);
 
     expect(count).toEqual([[0, 10, 0, 10]]);
@@ -249,13 +254,17 @@ describe('StaggeredMotion', () => {
   it('should support jumping to value', () => {
     let count = [];
     let setState = () => {};
-    const App = createClass({
-      getInitialState() {
-        return {p: false};
-      },
+    class App extends Component {
+      constructor() {
+        super();
+
+        this.state = {
+          p: false,
+        };
+      }
       componentWillMount() {
         setState = this.setState.bind(this);
-      },
+      }
       render() {
         return (
           <StaggeredMotion styles={() => [{a: this.state.p ? 400 : spring(0)}]}>
@@ -265,8 +274,8 @@ describe('StaggeredMotion', () => {
             }}
           </StaggeredMotion>
         );
-      },
-    });
+      }
+    }
     Inferno.render(<App/>, container);
 
     expect(count).toEqual([0]);
@@ -298,13 +307,17 @@ describe('StaggeredMotion', () => {
   it('should behave well when many owner updates come in-between rAFs', () => {
     let count = [];
     let setState = () => {};
-    const App = createClass({
-      getInitialState() {
-        return {a: spring(0)};
-      },
+    class App extends Component {
+      constructor() {
+        super();
+
+        this.state = {
+          a: spring(0),
+        };
+      }
       componentWillMount() {
         setState = this.setState.bind(this);
-      },
+      }
       render() {
         return (
           <StaggeredMotion styles={() => [this.state]}>
@@ -314,8 +327,8 @@ describe('StaggeredMotion', () => {
             }}
           </StaggeredMotion>
         );
-      },
-    });
+      }
+    }
     Inferno.render(<App/>, container);
 
     expect(count).toEqual([{a: 0}]);

@@ -1,4 +1,3 @@
-
 import presets from './presets';
 
 const defaultConfig = {

@@ -5,6 +5,7 @@ pids
 *.pid
 *.seed
 .idea
+*.orig
 
 coverage
 node_modules
@@ -15,3 +16,5 @@ lib
 
 /demos/**/all.*
 /build/
+
+package-lock.json

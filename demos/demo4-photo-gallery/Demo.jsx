@@ -1,24 +1,24 @@
-import Inferno from 'inferno';
+import Component from 'inferno-component';
 import {Motion, spring} from '../../src/inferno-motion';
-import createClass from 'inferno-create-class';
 
 const springSettings = {stiffness: 170, damping: 26};
 const NEXT = 'show-next';
 
-const Demo = createClass({
-  getInitialState() {
-    return {
+export default class Demo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       photos: [[500, 350], [800, 600], [800, 400], [700, 500], [200, 650], [600, 600]],
       currPhoto: 0,
     };
-  },
+  };
 
-  handleChange({target: {value}}) {
+  handleChange = ({target: {value}}) => {
     this.setState({currPhoto: value});
-  },
+  };
 
-  clickHandler(btn){
-    var photoIndex = btn === NEXT ? this.state.currPhoto+1 : this.state.currPhoto-1;
+  clickHandler = (btn) => {
+    let photoIndex = btn === NEXT ? this.state.currPhoto+1 : this.state.currPhoto-1;
 
     photoIndex = photoIndex >= 0 ? photoIndex : this.state.photos.length - 1;
     photoIndex = photoIndex >= this.state.photos.length ? 0 : photoIndex;
@@ -26,7 +26,7 @@ const Demo = createClass({
     this.setState({
       currPhoto: photoIndex
     })
-  },
+  };
 
   render() {
     const {photos, currPhoto} = this.state;
@@ -76,7 +76,5 @@ const Demo = createClass({
         </div>
       </div>
     );
-  },
-});
-
-export default Demo;
+  };
+}

@@ -4,7 +4,7 @@ import stepper from './stepper';
 import defaultNow from 'performance-now';
 import defaultRaf from 'raf';
 import shouldStopAnimation from './shouldStopAnimation';
-import createClass from 'inferno-create-class';
+import Component from 'inferno-component';
 
 const msPerFrame = 1000 / 60;
 
@@ -21,9 +21,22 @@ function shouldStopAnimationAll(
   return true;
 }
 
-const StaggeredMotion = createClass({
-  getInitialState() {
-    const {defaultStyles, styles} = this.props;
+export default class StaggeredMotion extends Component {
+  constructor(props) {
+    super(props);
+    this.animationID = null;
+	this.prevTime = 0;
+	this.accumulatedTime = 0;
+	  // it's possible that currentStyle's value is stale: if props is immediately
+	  // changed from 0 to 400 to spring(0) again, the async currentStyle is still
+	  // at 0 (didn't have time to tick and interpolate even once). If we naively
+	  // compare currentStyle with destVal it'll be 0 === 0 (no animation, stop).
+	  // In reality currentStyle should be 400
+    this.unreadPropStyles = null;
+    this.state = StaggeredMotion.defaultState(props);
+  }
+
+  static defaultState({defaultStyles, styles}) {
     const currentStyles = defaultStyles || styles().map(stripStyle);
     const currentVelocities = currentStyles.map(currentStyle => mapToZero(currentStyle));
     return {
@@ -32,17 +45,8 @@ const StaggeredMotion = createClass({
       lastIdealStyles: currentStyles,
       lastIdealVelocities: currentVelocities,
     };
-  },
+  }
 
-  animationID: (null),
-  prevTime: 0,
-  accumulatedTime: 0,
-  // it's possible that currentStyle's value is stale: if props is immediately
-  // changed from 0 to 400 to spring(0) again, the async currentStyle is still
-  // at 0 (didn't have time to tick and interpolate even once). If we naively
-  // compare currentStyle with destVal it'll be 0 === 0 (no animation, stop).
-  // In reality currentStyle should be 400
-  unreadPropStyles: (null),
   // after checking for unreadPropStyles != null, we manually go set the
   // non-interpolating values (those that are a number, without a spring
   // config)
@@ -80,7 +84,7 @@ const StaggeredMotion = createClass({
     if (someDirty) {
       this.setState({currentStyles, currentVelocities, lastIdealStyles, lastIdealVelocities});
     }
-  },
+  }
 
   startAnimationIfNecessary() {
     // TODO: when config is {a: 10} and dest is {a: 10} do we raf once and
@@ -90,10 +94,10 @@ const StaggeredMotion = createClass({
 
       // check if we need to animate in the first place
       if (shouldStopAnimationAll(
-        this.state.currentStyles,
-        destStyles,
-        this.state.currentVelocities,
-      )) {
+          this.state.currentStyles,
+          destStyles,
+          this.state.currentVelocities,
+        )) {
         // no need to cancel animationID here; shouldn't have any in flight
         this.animationID = null;
         this.accumulatedTime = 0;
@@ -199,12 +203,12 @@ const StaggeredMotion = createClass({
 
       this.startAnimationIfNecessary();
     });
-  },
+  }
 
   componentDidMount() {
     this.prevTime = defaultNow();
     this.startAnimationIfNecessary();
-  },
+  }
 
   componentWillReceiveProps(props) {
     if (this.unreadPropStyles != null) {
@@ -217,18 +221,16 @@ const StaggeredMotion = createClass({
       this.prevTime = defaultNow();
       this.startAnimationIfNecessary();
     }
-  },
+  }
 
   componentWillUnmount() {
     if (this.animationID != null) {
       defaultRaf.cancel(this.animationID);
       this.animationID = null;
     }
-  },
+  }
 
   render()               {
     return this.props.children(this.state.currentStyles);
-  },
-});
-
-export default StaggeredMotion;
+  }
+}
