@@ -1,6 +1,6 @@
 {
   "name": "inferno-motion",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A spring that solves your animation problems.",
   "main": "lib/inferno-motion.js",
   "devDependencies": {
