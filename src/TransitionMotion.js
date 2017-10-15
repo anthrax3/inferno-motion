@@ -6,7 +6,6 @@ import defaultNow from 'performance-now';
 import defaultRaf from 'raf';
 import shouldStopAnimation from './shouldStopAnimation';
 import Component from 'inferno-component';
-import Motion from './StaggeredMotion';
 
 const msPerFrame = 1000 / 60;
 
