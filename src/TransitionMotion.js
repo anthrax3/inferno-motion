@@ -475,4 +475,3 @@ export default class TransitionMotion extends Component {
     return this.props.children(hydratedStyles);
   }
 }
-

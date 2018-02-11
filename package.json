@@ -61,7 +61,10 @@
     "transition",
     "ui"
   ],
-  "author": "chenglou",
+  "author": [
+    "nkbt",
+    "chenglou"
+  ],
   "license": "MIT",
   "dependencies": {
     "inferno": "^3",
