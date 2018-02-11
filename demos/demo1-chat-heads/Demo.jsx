@@ -1,4 +1,4 @@
-import Component from 'inferno-component';
+import { Component } from 'inferno';
 import {StaggeredMotion, spring, presets} from '../../src/inferno-motion';
 import range from 'lodash.range';
 

@@ -1,22 +1,21 @@
-import Inferno from 'inferno'
-import Component from 'inferno-component'
+import { Component } from 'inferno';
 import {Motion, spring} from '../../src/inferno-motion';
 
-let spring_default = {size: 1, o: 1}
-let spring_show = {size: spring(1), o: spring(1)}
-let spring_hide = {size: spring(1), o: spring(0)}
+let spring_default = {size: 1, o: 1};
+let spring_show = {size: spring(1), o: spring(1)};
+let spring_hide = {size: spring(1), o: spring(0)};
 
 export default class Demo extends Component {
-	state = {shown: true}
+	state = {shown: true};
 	onclick = (e) => {
 		e.preventDefault();
 		this.show()
-	}
+	};
 	show() {
 		this.setState({shown: !this.state.shown})
 	}
 	render() {
-		var shown = this.state.shown
+		var shown = this.state.shown;
 		return (
             <div>
               <Overlay show={shown} />
@@ -30,9 +29,9 @@ export default class Demo extends Component {
 function Overlay(props) {
 	let {
 		show
-	} = props
-	let scope = "#thing-i-want-to-style"
-	let style = show ? spring_show : spring_hide
+	} = props;
+	let scope = "#thing-i-want-to-style";
+	let style = show ? spring_show : spring_hide;
 	return (
         <div>
           <Motion defaultStyle={spring_default} style={style} >{
@@ -43,7 +42,7 @@ function Overlay(props) {
               opacity: ${sprung.o};
               transform: scale(${sprung.size});
             }
-          `
+          `;
 				  return (
                       <style dangerouslySetInnerHTML={{__html: css}} />
 				  )

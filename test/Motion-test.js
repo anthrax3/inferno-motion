@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
-import Inferno from 'inferno';
-import Component from 'inferno-component';
+import { render } from 'inferno';
+import { Component } from 'inferno';
 import {spring} from '../src/inferno-motion';
 import createMockRaf from './createMockRaf';
 
@@ -44,7 +44,7 @@ describe('animation loop', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([0]);
     mockRaf.step(5);
@@ -72,7 +72,7 @@ describe('animation loop', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     mockRaf.step(5);
     expect(count).toEqual([
@@ -99,7 +99,7 @@ describe('animation loop', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([0]);
     mockRaf.step(10, 0);
@@ -162,7 +162,7 @@ describe('Motion', () => {
         return <Motion style={{a: 0}}>{() => null}</Motion>;
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
   });
 
   it('should not throw on unmount', () => {
@@ -185,7 +185,7 @@ describe('Motion', () => {
           : <Motion defaultStyle={{a: 0}} style={{a: spring(10)}}>{() => null}</Motion>;
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
     mockRaf.step(2);
     kill();
     mockRaf.step(3);
@@ -206,7 +206,7 @@ describe('Motion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([0]);
     mockRaf.step(4);
@@ -235,7 +235,7 @@ describe('Motion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     mockRaf.step(99);
     expect(count).toEqual([
@@ -268,7 +268,7 @@ describe('Motion', () => {
       }
     }
 
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([[0, 10]]);
     mockRaf.step(4);
@@ -302,7 +302,7 @@ describe('Motion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([0, 10]);
     mockRaf.step();
@@ -345,7 +345,7 @@ describe('Motion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([0]);
     mockRaf.step(111);
@@ -385,7 +385,7 @@ describe('Motion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([0]);
     setState({p: true});
@@ -436,7 +436,7 @@ describe('Motion', () => {
       }
     }
 
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     mockRaf.step(22);
 
@@ -473,7 +473,7 @@ describe('Motion', () => {
       }
     }
 
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     mockRaf.step(22);
 
@@ -512,7 +512,7 @@ describe('Motion', () => {
       }
     }
 
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
     mockRaf.step();
     setState({a: 50});
     mockRaf.step();
@@ -545,7 +545,7 @@ describe('Motion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([{a: 0}]);
     setState({a: 400});

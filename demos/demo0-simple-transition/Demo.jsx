@@ -1,4 +1,4 @@
-import Component from 'inferno-component';
+import { Component } from 'inferno';
 import {Motion, spring} from '../../src/inferno-motion';
 
 export default class Demo extends Component {

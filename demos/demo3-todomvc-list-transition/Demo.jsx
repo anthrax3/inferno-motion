@@ -1,4 +1,4 @@
-import Component from 'inferno-component';
+import { Component } from 'inferno';
 import {TransitionMotion, spring, presets} from '../../src/inferno-motion';
 
 export default class Demo extends Component {
@@ -122,7 +122,7 @@ export default class Demo extends Component {
               className="new-todo"
               placeholder="What needs to be done?"
               value={value}
-              onChange={this.handleChange}
+              onInput={this.handleChange}
             />
           </form>
         </header>

@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
-import Inferno from 'inferno';
-import Component from 'inferno-component';
+import { render } from 'inferno';
+import { Component } from 'inferno';
 import {spring} from '../src/inferno-motion';
 import createMockRaf from './createMockRaf';
 
@@ -37,7 +37,7 @@ describe('StaggeredMotion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
   });
 
   it('should not throw on unmount', () => {
@@ -62,7 +62,7 @@ describe('StaggeredMotion', () => {
             </StaggeredMotion>;
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
     mockRaf.step(2);
     kill();
     mockRaf.step(3);
@@ -85,7 +85,7 @@ describe('StaggeredMotion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([0]);
     mockRaf.step(4);
@@ -114,7 +114,7 @@ describe('StaggeredMotion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     mockRaf.step(99);
     expect(count).toEqual([
@@ -151,7 +151,7 @@ describe('StaggeredMotion', () => {
       }
     }
 
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([[0, 10, 0, 10]]);
     mockRaf.step(4);
@@ -185,7 +185,7 @@ describe('StaggeredMotion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([0, 10]);
     mockRaf.step();
@@ -236,7 +236,7 @@ describe('StaggeredMotion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([[0, 10, 0, 10]]);
     mockRaf.step(111);
@@ -276,7 +276,7 @@ describe('StaggeredMotion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([0]);
     setState({p: true});
@@ -329,7 +329,7 @@ describe('StaggeredMotion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([{a: 0}]);
     setState({a: 400});

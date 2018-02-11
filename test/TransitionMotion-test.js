@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
-import Inferno from 'inferno';
-import Component from 'inferno-component';
+import { render } from 'inferno';
+import { Component } from 'inferno';
 import {spring} from '../src/inferno-motion';
 import createMockRaf from './createMockRaf';
 
@@ -33,7 +33,7 @@ describe('TransitionMotion', () => {
         return <TransitionMotion styles={[{key: '1', style: {}}]}>{() => null}</TransitionMotion>;
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
   });
 
   it('should not throw on unmount', () => {
@@ -60,7 +60,7 @@ describe('TransitionMotion', () => {
             </TransitionMotion>;
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
     mockRaf.step(2);
     kill();
     mockRaf.step(3);
@@ -91,7 +91,7 @@ describe('TransitionMotion', () => {
             </TransitionMotion>;
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
     mockRaf.step(2);
     kill();
     mockRaf.step(3);
@@ -115,7 +115,7 @@ describe('TransitionMotion', () => {
       }
     }
 
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([{a: 0}]);
     mockRaf.step(4);
@@ -146,7 +146,7 @@ describe('TransitionMotion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     mockRaf.step(99);
     expect(count).toEqual([
@@ -185,7 +185,7 @@ describe('TransitionMotion', () => {
       }
     }
 
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([[
       {key: '1', style: {a: 0, b: 10}, data: undefined},
@@ -244,7 +244,7 @@ describe('TransitionMotion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([]);
     setState({
@@ -281,7 +281,7 @@ describe('TransitionMotion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([
       {x: 0},
@@ -329,7 +329,7 @@ describe('TransitionMotion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([0]);
     // Move "time" until we reach the final styles value
@@ -370,7 +370,7 @@ describe('TransitionMotion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([{x: 0}]);
     setState({p: true});
@@ -426,7 +426,7 @@ describe('TransitionMotion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([[{key: '1', style: {x: 0}, data: undefined}]]);
     setState({
@@ -505,7 +505,7 @@ describe('TransitionMotion', () => {
         );
       }
     }
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([[{key: '1', style: {x: 0}, data: undefined}]]);
     setState({
@@ -578,7 +578,7 @@ describe('TransitionMotion', () => {
       }
     }
 
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([
       [
@@ -634,7 +634,7 @@ describe('TransitionMotion', () => {
       }
     }
 
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     expect(count).toEqual([[
       {key: '1', style: {a: 0, b: 10}, data: undefined},
@@ -693,7 +693,7 @@ describe('TransitionMotion', () => {
       }
     }
 
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     // somewhat defined behavior: notice that data is 3, not 1. For simplicity
     // of current implementation we've decided not to render data: [1] from
@@ -802,7 +802,7 @@ describe('TransitionMotion', () => {
       }
     }
 
-    Inferno.render(<App/>, container);
+    render(<App/>, container);
 
     // somewhat defined behavior: notice that data is 3, not 1. For simplicity
     // of current implementation we've decided not to render data: [1] from

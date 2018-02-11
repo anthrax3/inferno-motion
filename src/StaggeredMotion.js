@@ -4,7 +4,7 @@ import stepper from './stepper';
 import defaultNow from 'performance-now';
 import defaultRaf from 'raf';
 import shouldStopAnimation from './shouldStopAnimation';
-import Component from 'inferno-component';
+import { Component } from 'inferno';
 
 const msPerFrame = 1000 / 60;
 

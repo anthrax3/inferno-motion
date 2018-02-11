@@ -32,12 +32,6 @@ var config = {
       commonjs2: 'inferno',
       commonjs: 'inferno',
       amd: 'inferno'
-    },
-    'inferno-component': {
-      root: 'Inferno.Component',
-      commonjs2: 'inferno-component',
-      commonjs: 'inferno-component',
-      amd: 'inferno-component'
     }
   }
 };

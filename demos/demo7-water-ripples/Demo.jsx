@@ -1,4 +1,4 @@
-import Component from 'inferno-component';
+import { Component } from 'inferno';
 import {TransitionMotion, spring} from '../../src/inferno-motion';
 
 const leavingSpringConfig = {stiffness: 60, damping: 15};

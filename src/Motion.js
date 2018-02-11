@@ -1,4 +1,4 @@
-import Component from 'inferno-component';
+import { Component } from 'inferno';
 import mapToZero from './mapToZero';
 import stripStyle from './stripStyle';
 import stepper from './stepper';
